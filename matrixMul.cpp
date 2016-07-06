@@ -13,12 +13,11 @@ typedef struct {
 
 int main(int argc, char const *argv[])
 {
-	srand(time(NULL));
 	clock_t t;
 	Matrix A, B, C;
     int a1, a2, b1, b2;
 
-    t = clock();
+    srand(time(NULL));
 
     // Get dimensions of A and B
     // Run $ ./matrixMul 1 1000000 400
@@ -59,13 +58,20 @@ int main(int argc, char const *argv[])
     cout << endl;
     
     // Matrix multiplication
+    t = clock();
+
     for (int i = 0; i < A.height; ++i)
     	for (int j = 0; j < B.width; ++j)
     		for (int k = 0; k < A.width; ++k) {
     			C.elements[i * C.width + j] += A.elements[i * A.width + k] * 
     				B.elements[k * B.width + j];
     		}
-	
+
+    // Print time multiplication took
+    t = clock() - t;
+    cout << "It took me " << fixed << ((float)t)/CLOCKS_PER_SEC;
+    cout << " seconds." << endl;
+
     // Print C
     for (int i = 0; i < C.height; ++i) {
         for (int j = 0; j <C.width; ++j) {
@@ -78,10 +84,6 @@ int main(int argc, char const *argv[])
     delete [] A.elements;
     delete [] B.elements;
     delete [] C.elements;
-	
-	t = clock() - t;
-	cout << "It took me " << fixed << ((float)t)/CLOCKS_PER_SEC;
-	cout << " seconds." << endl;
 
 	return 0;
 }
