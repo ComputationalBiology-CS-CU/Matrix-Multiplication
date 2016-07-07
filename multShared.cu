@@ -23,7 +23,6 @@ typedef struct {
 #define BLOCK_SIZE 10
 
 __global__ void MatMulKernel(const Matrix, const Matrix, Matrix);
-#include "mult.h"
 
 // Get a matrix element
 __device__ float GetElement(const Matrix A, int row, int col)
