@@ -46,8 +46,7 @@ __device__ void SetElement(Matrix A, int row, int col,
     Asub.width    = BLOCK_SIZE;
     Asub.height   = BLOCK_SIZE;
     Asub.stride   = A.stride;
-    Asub.elements = &A.elements[A.stride * BLOCK_SIZE * row
-                                         + BLOCK_SIZE * col];
+    Asub.elements = &A.elements[A.stride * BLOCK_SIZE * row + BLOCK_SIZE * col];
     return Asub;
 }
 
@@ -60,14 +59,13 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     d_A.width = d_A.stride = A.width; d_A.height = A.height;
     size_t size = A.width * A.height * sizeof(float);
     cudaMalloc(&d_A.elements, size);
-    cudaMemcpy(d_A.elements, A.elements, size,
-               cudaMemcpyHostToDevice);
+    cudaMemcpy(d_A.elements, A.elements, size, cudaMemcpyHostToDevice);
+    
     Matrix d_B;
     d_B.width = d_B.stride = B.width; d_B.height = B.height;
     size = B.width * B.height * sizeof(float);
     cudaMalloc(&d_B.elements, size);
-    cudaMemcpy(d_B.elements, B.elements, size,
-    cudaMemcpyHostToDevice);
+    cudaMemcpy(d_B.elements, B.elements, size, cudaMemcpyHostToDevice);
 
     // Allocate C in device memory
     Matrix d_C;
@@ -81,8 +79,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     MatMulKernel<<<dimGrid, dimBlock>>>(d_A, d_B, d_C);
 
     // Read C from device memory
-    cudaMemcpy(C.elements, d_C.elements, size,
-               cudaMemcpyDeviceToHost);
+    cudaMemcpy(C.elements, d_C.elements, size, cudaMemcpyDeviceToHost);
 
     // Free device memory
     cudaFree(d_A.elements);

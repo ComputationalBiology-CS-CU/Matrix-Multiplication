@@ -33,14 +33,13 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     d_A.width = A.width; d_A.height = A.height;
     size_t size = A.width * A.height * sizeof(float);
     cudaMalloc(&d_A.elements, size);
-    cudaMemcpy(d_A.elements, A.elements, size,
-               cudaMemcpyHostToDevice);
+    cudaMemcpy(d_A.elements, A.elements, size, cudaMemcpyHostToDevice);
+    
     Matrix d_B;
     d_B.width = B.width; d_B.height = B.height;
     size = B.width * B.height * sizeof(float);
     cudaMalloc(&d_B.elements, size);
-    cudaMemcpy(d_B.elements, B.elements, size,
-               cudaMemcpyHostToDevice);
+    cudaMemcpy(d_B.elements, B.elements, size, cudaMemcpyHostToDevice);
 
     // Allocate C in device memory
     Matrix d_C;
@@ -54,8 +53,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     MatMulKernel<<<dimGrid, dimBlock>>>(d_A, d_B, d_C);
 
     // Read C from device memory
-    cudaMemcpy(C.elements, Cd.elements, size,
-               cudaMemcpyDeviceToHost);
+    cudaMemcpy(C.elements, Cd.elements, size,cudaMemcpyDeviceToHost);
 
     // Free device memory
     cudaFree(d_A.elements);
@@ -72,8 +70,7 @@ __global__ void MatMulKernel(Matrix A, Matrix B, Matrix C)
     int row = blockIdx.y * blockDim.y + threadIdx.y;
     int col = blockIdx.x * blockDim.x + threadIdx.x;
     for (int e = 0; e < A.width; ++e)
-        Cvalue += A.elements[row * A.width + e]
-                * B.elements[e * B.width + col];
+        Cvalue += A.elements[row * A.width + e] * B.elements[e * B.width + col];
     C.elements[row * C.width + col] = Cvalue;
 }
 

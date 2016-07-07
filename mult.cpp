@@ -38,24 +38,15 @@ int main(int argc, char const *argv[])
     C.width = B.width;
     C.elements = new float[C.width * C.height];
 
-    // Fill A and B with random floats, and print them
-    for (int i = 0; i < A.height; ++i) {
-        for (int j = 0; j < A.width; ++j) {
+    // Fill A and B with random floats
+    for (int i = 0; i < A.height; ++i)
+        for (int j = 0; j < A.width; ++j)
             A.elements[i * A.width + j] = float(rand() % 100);
-            cout << fixed << A.elements[i * A.width + j] << "\t";
-        }
-        cout << endl;
-    }
-    cout << endl;
 
-    for (int i = 0; i < B.height; ++i) {
-        for (int j = 0; j < B.width; ++j) {
+
+    for (int i = 0; i < B.height; ++i) 
+        for (int j = 0; j < B.width; ++j) 
             B.elements[i * B.width + j] = float(rand() % 100);
-            cout << fixed << B.elements[i * B.width + j] << "\t";
-        }
-        cout << endl;
-    }
-    cout << endl;
     
     // Matrix multiplication
     t = clock();
@@ -64,7 +55,7 @@ int main(int argc, char const *argv[])
     	for (int j = 0; j < B.width; ++j)
     		for (int k = 0; k < A.width; ++k) {
     			C.elements[i * C.width + j] += A.elements[i * A.width + k] * 
-    				B.elements[k * B.width + j];
+                    B.elements[k * B.width + j];
     		}
 
     // Print time multiplication took
@@ -73,8 +64,8 @@ int main(int argc, char const *argv[])
     cout << " seconds." << endl;
 
     // Print C
-    for (int i = 0; i < C.height; ++i) {
-        for (int j = 0; j <C.width; ++j) {
+    for (int i = 0; i < min(10, C.height); ++i) {
+        for (int j = 0; j < min(10, C.width); ++j) {
             cout << fixed << C.elements[i * C.width + j] << "\t";
         }
         cout << endl;
