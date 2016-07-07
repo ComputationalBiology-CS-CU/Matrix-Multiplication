@@ -15,7 +15,7 @@ mult.o: mult.cpp
 
 .PHONY: clean
 clean:
-        rm -f *.o a.out core mult
+	rm -f *.o a.out core mult
 
 .PHONY: all
 all: clean mult
