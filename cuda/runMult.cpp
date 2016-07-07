@@ -1,4 +1,6 @@
-#import "matrixMul.h"
+#include <cstdlib>
+#include <ctime>
+#include "matrixMul.h"
 
 int main(int argc, char const *argv[])
 {

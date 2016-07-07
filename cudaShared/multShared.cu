@@ -3,7 +3,7 @@
         html#ixzz4CtH09yed 
 */
 
-#import "matrixMul.h"
+#include "matrixMul.h"
 
 // Get a matrix element
 __device__ float GetElement(const Matrix A, int row, int col)

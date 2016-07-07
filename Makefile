@@ -1,15 +1,7 @@
 NVCC = nvcc
-CXX = g++
 
-runMatrix: runMatrix.o matrixMul.o
-	$(NVCC) -o runMatrix runMatrix.o matrixMul.o
+runMult: runMult.o multShared.o
 
-matrixMul.o: matrixMul.cu matrixMul.h
-	$(NVCC) -c matrixMul.cu matrixmul.h
+runMult.o: runMult.cpp mult.h
 
-runMatrix.o: runMatrix.cpp matrixMul.h
-	$(NVCC) -c runMatrix.cpp matrixMul.h
-
-
-
-	
+multShared.o: multShared.cu mult.h
