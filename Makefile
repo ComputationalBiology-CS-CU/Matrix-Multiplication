@@ -1,7 +1,21 @@
-NVCC = nvcc
+CC  = gcc
+CXX = g++
 
-runMult: runMult.o multShared.o
+INCLUDES =
 
-runMult.o: runMult.cpp mult.h
+CFLAGS   = -g -Wall $(INCLUDES)
+CXXFLAGS = -g -Wall $(INCLUDES)
 
-multShared.o: multShared.cu mult.h
+LDFLAGS = -g
+LDLIBS = -lstdc++
+
+mult: mult.o
+
+mult.o: mult.cpp
+
+.PHONY: clean
+clean:
+	rm -f *.o a.out core mult
+
+.PHONY: all
+all: clean mult

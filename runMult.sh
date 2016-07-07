@@ -7,4 +7,4 @@
 
 
 # the program to run
-./a.out 1 1000000 400
+./mult 1 1000000 400
