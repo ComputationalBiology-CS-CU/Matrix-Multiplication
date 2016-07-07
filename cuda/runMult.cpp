@@ -1,6 +1,6 @@
 #include <cstdlib>
 #include <ctime>
-#include "matrixMul.h"
+#include "mult.h"
 
 int main(int argc, char const *argv[])
 {
