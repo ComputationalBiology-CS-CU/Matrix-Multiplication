@@ -172,13 +172,23 @@ int main(int argc, char const *argv[])
     C.elements = new float[C.width * C.height];
 
     // Fill A and B with random floats
-    for (int i = 0; i < A.height; ++i)
-        for (int j = 0; j < A.width; ++j)
+    for (int i = 0; i < A.height; ++i) {
+        for (int j = 0; j < A.width; ++j) {
             A.elements[i * A.width + j] = float(rand() % 100);
+            cout << fixed << A.elements[i * A.width + j] << "\t";
+        }
+        cout << endl;
+    }
+    cout << endl;
 
-    for (int i = 0; i < B.height; ++i)
-        for (int j = 0; j < B.width; ++j)
+    for (int i = 0; i < B.height; ++i) {
+        for (int j = 0; j < B.width; ++j) {
             B.elements[i * B.width + j] = float(rand() % 100);
+            cout << fixed << B.elements[i * B.width + j] << "\t";
+        }
+        cout << endl;
+    }
+    cout << endl;
 
     // Call MatMul(), and therefore MatMulKernel()
     t = clock();
