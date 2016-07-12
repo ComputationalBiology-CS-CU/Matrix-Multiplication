@@ -20,7 +20,7 @@ typedef struct {
 
 // Thread block size
 // Matrix dimensions are assumed to be multiples of BLOCK_SIZE
-#define BLOCK_SIZE 10
+#define BLOCK_SIZE 20
 
 __global__ void MatMulKernel(const Matrix, const Matrix, Matrix);
 
