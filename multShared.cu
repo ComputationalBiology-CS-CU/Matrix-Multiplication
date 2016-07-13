@@ -54,6 +54,13 @@ __global__ void MatMulKernel(const Matrix, const Matrix, Matrix);
 // Matrix dimensions are assumed to be multiples of BLOCK_SIZE
 void MatMul(const Matrix A, const Matrix B, Matrix C)
 {
+    // Set up GPU timer
+    cudaEvent_t start, stop;
+    float time;
+
+    cudaEventCreate(&start);
+    cudaEventCreate(&stop);
+
     // Load A and B to device memory
     Matrix d_A;
     d_A.width = d_A.stride = A.width; d_A.height = A.height;
@@ -76,7 +83,20 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     // Invoke kernel
     dim3 dimBlock(BLOCK_SIZE, BLOCK_SIZE);
     dim3 dimGrid(B.width / dimBlock.x, A.height / dimBlock.y);
+    
+    // Start GPU timer
+    cudaEventRecord(start, 0);
+
     MatMulKernel<<<dimGrid, dimBlock>>>(d_A, d_B, d_C);
+
+    // Stop GPU timer
+    cudaEventRecord(stop, 0);
+
+    cudaEventElapsedTime(&time, start, stop);
+    cudaEventDestroy(start);
+    cudaEventDestroy(stop);
+
+    cout << fixed << "It took me " << time << " milliseconds" << endl;
 
     // Read C from device memory
     cudaMemcpy(C.elements, d_C.elements, size, cudaMemcpyDeviceToHost);
@@ -191,14 +211,16 @@ int main(int argc, char const *argv[])
     cout << endl;
 
     // Call MatMul(), and therefore MatMulKernel()
-    t = clock();
+    //t = clock();
 
     MatMul(A, B, C);
 
     // Print time the multiplication took
+    /*
     t = clock() - t;
     cout << "It took me " << fixed << ((float)t)/CLOCKS_PER_SEC;
     cout << " seconds." << endl;
+    */
 
     // Print C
     for (int i = 0; i < min(10, C.height); ++i) {
