@@ -18,6 +18,12 @@ typedef struct {
     float* elements;
 } Matrix;
 
+// Thread block size
+// Matrix dimensions are assumed to be multiples of BLOCK_SIZE
+#define BLOCK_SIZE 20
+
+__global__ void MatMulKernel(const Matrix, const Matrix, Matrix);
+
 // Get a matrix element
 __device__ float GetElement(const Matrix A, int row, int col)
 {
@@ -43,12 +49,6 @@ __device__ void SetElement(Matrix A, int row, int col,
     Asub.elements = &A.elements[A.stride * BLOCK_SIZE * row + BLOCK_SIZE * col];
     return Asub;
 }
-
-// Thread block size
-// Matrix dimensions are assumed to be multiples of BLOCK_SIZE
-#define BLOCK_SIZE 20
-
-__global__ void MatMulKernel(const Matrix, const Matrix, Matrix);
 
 // Matrix multiplication - Host code
 // Matrix dimensions are assumed to be multiples of BLOCK_SIZE
@@ -166,7 +166,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 
 int main(int argc, char const *argv[])
 {
-    clock_t t;
+    //clock_t t;
     Matrix A, B, C;
     int a1, a2, b1, b2;
 
