@@ -73,7 +73,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     cout << fixed << "It took me " << time << " milliseconds" << endl;
 
     // Read C from device memory
-    cudaMemcpy(C.elements, Cd.elements, size,cudaMemcpyDeviceToHost);
+    cudaMemcpy(C.elements, d_C.elements, size,cudaMemcpyDeviceToHost);
 
     // Free device memory
     cudaFree(d_A.elements);
