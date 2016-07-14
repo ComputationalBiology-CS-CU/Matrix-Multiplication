@@ -19,10 +19,7 @@ typedef struct {
 } Matrix;
 
 // Thread block size
-// Matrix dimensions are assumed to be multiples of BLOCK_SIZE
-#define BLOCK_SIZE 20
-
-__global__ void MatMulKernel(const Matrix, const Matrix, Matrix);
+#define BLOCK_SIZE 16
 
 // Get a matrix element
 __device__ float GetElement(const Matrix A, int row, int col)
@@ -46,33 +43,31 @@ __device__ void SetElement(Matrix A, int row, int col,
     Asub.width    = BLOCK_SIZE;
     Asub.height   = BLOCK_SIZE;
     Asub.stride   = A.stride;
-    Asub.elements = &A.elements[A.stride * BLOCK_SIZE * row + BLOCK_SIZE * col];
+    Asub.elements = &A.elements[A.stride * BLOCK_SIZE * row
+                                         + BLOCK_SIZE * col];
     return Asub;
 }
+
+// Forward declaration of the matrix multiplication kernel
+__global__ void MatMulKernel(const Matrix, const Matrix, Matrix);
 
 // Matrix multiplication - Host code
 // Matrix dimensions are assumed to be multiples of BLOCK_SIZE
 void MatMul(const Matrix A, const Matrix B, Matrix C)
 {
-    // Set up GPU timer
-    cudaEvent_t start, stop;
-    float time;
-
-    cudaEventCreate(&start);
-    cudaEventCreate(&stop);
-
     // Load A and B to device memory
     Matrix d_A;
     d_A.width = d_A.stride = A.width; d_A.height = A.height;
     size_t size = A.width * A.height * sizeof(float);
     cudaMalloc(&d_A.elements, size);
-    cudaMemcpy(d_A.elements, A.elements, size, cudaMemcpyHostToDevice);
-    
+    cudaMemcpy(d_A.elements, A.elements, size,
+               cudaMemcpyHostToDevice);
     Matrix d_B;
     d_B.width = d_B.stride = B.width; d_B.height = B.height;
     size = B.width * B.height * sizeof(float);
     cudaMalloc(&d_B.elements, size);
-    cudaMemcpy(d_B.elements, B.elements, size, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_B.elements, B.elements, size,
+    cudaMemcpyHostToDevice);
 
     // Allocate C in device memory
     Matrix d_C;
@@ -83,23 +78,11 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     // Invoke kernel
     dim3 dimBlock(BLOCK_SIZE, BLOCK_SIZE);
     dim3 dimGrid(B.width / dimBlock.x, A.height / dimBlock.y);
-    
-    // Start GPU timer
-    cudaEventRecord(start, 0);
-
     MatMulKernel<<<dimGrid, dimBlock>>>(d_A, d_B, d_C);
 
-    // Stop GPU timer
-    cudaEventRecord(stop, 0);
-
-    cudaEventElapsedTime(&time, start, stop);
-    cudaEventDestroy(start);
-    cudaEventDestroy(stop);
-
-    cout << fixed << "It took me " << time << " milliseconds" << endl;
-
     // Read C from device memory
-    cudaMemcpy(C.elements, d_C.elements, size, cudaMemcpyDeviceToHost);
+    cudaMemcpy(C.elements, d_C.elements, size,
+               cudaMemcpyDeviceToHost);
 
     // Free device memory
     cudaFree(d_A.elements);
@@ -107,7 +90,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     cudaFree(d_C.elements);
 }
 
-// Matrix multiplication kernel called by MatMul() [line 60]
+// Matrix multiplication kernel called by MatMul()
  __global__ void MatMulKernel(Matrix A, Matrix B, Matrix C)
 {
     // Block row and column

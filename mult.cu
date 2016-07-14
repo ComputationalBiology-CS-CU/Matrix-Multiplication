@@ -10,43 +10,36 @@
 using namespace std;
 
 // Matrices are stored in row-major order:
-// M(row, col) = *(M.elements + row * M.stride + col)
+// M(row, col) = *(M.elements + row * M.width + col)
 typedef struct {
     int width;
     int height;
-    int stride; 
     float* elements;
 } Matrix;
 
 // Thread block size
-// Matrix dimensions are assumed to be multiples of BLOCK_SIZE
-#define BLOCK_SIZE 20
+#define BLOCK_SIZE 16
 
+// Forward declaration of the matrix multiplication kernel
 __global__ void MatMulKernel(const Matrix, const Matrix, Matrix);
 
 // Matrix multiplication - Host code
 // Matrix dimensions are assumed to be multiples of BLOCK_SIZE
 void MatMul(const Matrix A, const Matrix B, Matrix C)
 {
-    // Set up GPU timer
-    cudaEvent_t start, stop;
-    float time;
-
-    cudaEventCreate(&start);
-    cudaEventCreate(&stop);
-
     // Load A and B to device memory
     Matrix d_A;
     d_A.width = A.width; d_A.height = A.height;
     size_t size = A.width * A.height * sizeof(float);
     cudaMalloc(&d_A.elements, size);
-    cudaMemcpy(d_A.elements, A.elements, size, cudaMemcpyHostToDevice);
-    
+    cudaMemcpy(d_A.elements, A.elements, size,
+               cudaMemcpyHostToDevice);
     Matrix d_B;
     d_B.width = B.width; d_B.height = B.height;
     size = B.width * B.height * sizeof(float);
     cudaMalloc(&d_B.elements, size);
-    cudaMemcpy(d_B.elements, B.elements, size, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_B.elements, B.elements, size,
+               cudaMemcpyHostToDevice);
 
     // Allocate C in device memory
     Matrix d_C;
@@ -57,23 +50,11 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     // Invoke kernel
     dim3 dimBlock(BLOCK_SIZE, BLOCK_SIZE);
     dim3 dimGrid(B.width / dimBlock.x, A.height / dimBlock.y);
-    
-    // Start GPU timer
-    cudaEventRecord(start, 0);
-    
     MatMulKernel<<<dimGrid, dimBlock>>>(d_A, d_B, d_C);
 
-    // Stop GPU timer
-    cudaEventRecord(stop, 0);
-
-    cudaEventElapsedTime(&time, start, stop);
-    cudaEventDestroy(start);
-    cudaEventDestroy(stop);
-
-    cout << fixed << "It took me " << time << " milliseconds" << endl;
-
     // Read C from device memory
-    cudaMemcpy(C.elements, d_C.elements, size,cudaMemcpyDeviceToHost);
+    cudaMemcpy(C.elements, Cd.elements, size,
+               cudaMemcpyDeviceToHost);
 
     // Free device memory
     cudaFree(d_A.elements);
@@ -90,7 +71,8 @@ __global__ void MatMulKernel(Matrix A, Matrix B, Matrix C)
     int row = blockIdx.y * blockDim.y + threadIdx.y;
     int col = blockIdx.x * blockDim.x + threadIdx.x;
     for (int e = 0; e < A.width; ++e)
-        Cvalue += A.elements[row * A.width + e] * B.elements[e * B.width + col];
+        Cvalue += A.elements[row * A.width + e]
+                * B.elements[e * B.width + col];
     C.elements[row * C.width + col] = Cvalue;
 }
 
