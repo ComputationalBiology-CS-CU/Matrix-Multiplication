@@ -172,7 +172,7 @@ int main(int argc, char const *argv[])
     //clock_t t;
     Matrix A, B, C;
     int a1, a2, b1, b2;
-    int i, j, k;
+    int i, j;
 
     srand(time(NULL));
 
