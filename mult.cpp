@@ -16,6 +16,7 @@ int main(int argc, char const *argv[])
 	clock_t t;
 	Matrix A, B, C;
     int a1, a2, b1, b2;
+    int i, j, k;
 
     srand(time(NULL));
 
@@ -39,21 +40,21 @@ int main(int argc, char const *argv[])
     C.elements = new float[C.width * C.height];
 
     // Fill A and B with random floats
-    for (int i = 0; i < A.height; ++i)
-        for (int j = 0; j < A.width; ++j)
+    for (i = 0; i < A.height; ++i)
+        for (j = 0; j < A.width; ++j)
             A.elements[i * A.width + j] = float(rand() % 100);
 
 
-    for (int i = 0; i < B.height; ++i) 
-        for (int j = 0; j < B.width; ++j) 
+    for (i = 0; i < B.height; ++i) 
+        for (j = 0; j < B.width; ++j) 
             B.elements[i * B.width + j] = float(rand() % 100);
     
     // Matrix multiplication
     t = clock();
 
-    for (int i = 0; i < A.height; ++i)
-    	for (int j = 0; j < B.width; ++j)
-    		for (int k = 0; k < A.width; ++k) {
+    for (i = 0; i < A.height; ++i)
+    	for (j = 0; j < B.width; ++j)
+    		for (k = 0; k < A.width; ++k) {
     			C.elements[i * C.width + j] += A.elements[i * A.width + k] * 
                     B.elements[k * B.width + j];
     		}
@@ -63,7 +64,23 @@ int main(int argc, char const *argv[])
     cout << "It took me " << fixed << ((float)t)/CLOCKS_PER_SEC;
     cout << " seconds." << endl;
 
-    // Print C
+    // Print A, B, and C
+    for (i = 0; i < min(10, A.height); ++i) {
+        for (j = 0; j < min(10, A.width); ++j)
+            cout << fixed << A.elements[i * A.width + j] << "\t";
+        
+        cout << endl;
+    }
+    cout << endl;
+    
+    for (i = 0; i < min(10, B.height); ++i) {
+        for (j = 0; j < min(10, B.width); ++j)
+            cout << fixed << B.elements[i * B.width + j] << "\t";
+
+        cout << endl;
+    }
+    cout << endl;
+
     for (int i = 0; i < min(10, C.height); ++i) {
         for (int j = 0; j < min(10, C.width); ++j) {
             cout << fixed << C.elements[i * C.width + j] << "\t";

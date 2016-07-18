@@ -100,6 +100,7 @@ int main(int argc, char const *argv[])
 {
     Matrix A, B, C;
     int a1, a2, b1, b2;
+    int i, j;
 
     srand(time(NULL));
 
@@ -123,20 +124,20 @@ int main(int argc, char const *argv[])
     C.elements = new float[C.width * C.height];
 
     // Fill A and B with random floats
-    for (int i = 0; i < A.height; ++i)
-        for (int j = 0; j < A.width; ++j)
+    for (i = 0; i < A.height; ++i)
+        for (j = 0; j < A.width; ++j)
             A.elements[i * A.width + j] = float(rand() % 100);
 
-    for (int i = 0; i < B.height; ++i)
-        for (int j = 0; j < B.width; ++j)
+    for (i = 0; i < B.height; ++i)
+        for (j = 0; j < B.width; ++j)
             B.elements[i * B.width + j] = float(rand() % 100);
 
     // Call MatMul(), and therefore MatMulKernel()
     MatMul(A, B, C);
 
     // Print C
-    for (int i = 0; i < min(10, C.height); ++i) {
-        for (int j = 0; j < min(10, C.width); ++j)
+    for (i = 0; i < min(10, C.height); ++i) {
+        for (j = 0; j < min(10, C.width); ++j)
             cout << fixed << C.elements[i * C.width + j] << "\t";
 
         cout << endl;
