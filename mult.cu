@@ -98,7 +98,6 @@ __global__ void MatMulKernel(Matrix A, Matrix B, Matrix C)
 
 int main(int argc, char const *argv[])
 {
-    //clock_t t;
     Matrix A, B, C;
     int a1, a2, b1, b2;
 
@@ -133,16 +132,7 @@ int main(int argc, char const *argv[])
             B.elements[i * B.width + j] = float(rand() % 100);
 
     // Call MatMul(), and therefore MatMulKernel()
-    //t = clock();
-
     MatMul(A, B, C);
-
-    // Print time the multiplication took
-    /*
-    t = clock() - t;
-    cout << "It took me " << fixed << ((float)t)/CLOCKS_PER_SEC;
-    cout << " seconds." << endl;
-    */
 
     // Print C
     for (int i = 0; i < min(10, C.height); ++i) {

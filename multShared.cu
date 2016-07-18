@@ -169,7 +169,6 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 
 int main(int argc, char const *argv[])
 {
-    //clock_t t;
     Matrix A, B, C;
     int a1, a2, b1, b2;
     int i, j;
@@ -196,51 +195,38 @@ int main(int argc, char const *argv[])
     C.elements = new float[C.width * C.height];
 
     // Fill A and B with random floats
-    for (i = 0; i < A.height; ++i) {
-        for (j = 0; j < A.width; ++j) {
+    for (i = 0; i < A.height; ++i) 
+        for (j = 0; j < A.width; ++j) 
             A.elements[i * A.width + j] = float(rand() % 100);
-        }
-    }
 
-    for (i = 0; i < B.height; ++i) {
-        for (j = 0; j < B.width; ++j) {
+    for (i = 0; i < B.height; ++i) 
+        for (j = 0; j < B.width; ++j) 
             B.elements[i * B.width + j] = float(rand() % 100);
-        }
-    }
 
     // Call MatMul(), and therefore MatMulKernel()
-    //t = clock();
-
     MatMul(A, B, C);
-
-    // Print time the multiplication took
-    /*
-    t = clock() - t;
-    cout << "It took me " << fixed << ((float)t)/CLOCKS_PER_SEC;
-    cout << " seconds." << endl;
-    */
 
     // Print A, B, and C
     for (i = 0; i < min(10, A.height); ++i) {
-        for (j = 0; j < min(10, A.width); ++j) {
+        for (j = 0; j < min(10, A.width); ++j)
             cout << fixed << A.elements[i * A.width + j] << "\t";
-        }
+        
         cout << endl;
     }
     cout << endl;
     
     for (i = 0; i < min(10, B.height); ++i) {
-        for (j = 0; j < min(10, B.width); ++j) {
+        for (j = 0; j < min(10, B.width); ++j)
             cout << fixed << B.elements[i * B.width + j] << "\t";
-        }
+
         cout << endl;
     }
     cout << endl;
     
     for (i = 0; i < min(10, C.height); ++i) {
-        for (j = 0; j < min(10, C.width); ++j) {
+        for (j = 0; j < min(10, C.width); ++j) 
             cout << fixed << C.elements[i * C.width + j] << "\t";
-        }
+
         cout << endl;
     }
     cout << endl;
