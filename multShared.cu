@@ -203,6 +203,11 @@ int main(int argc, char const *argv[])
         for (j = 0; j < B.width; ++j) 
             B.elements[i * B.width + j] = float(rand() % 100);
 
+    // Fill C with 0's
+    for (i = 0; i < C.height; ++i)
+        for (j = 0; j < C.width; ++j)
+            C.elements[i * C.width + j] = 0.0;
+
     // Call MatMul(), and therefore MatMulKernel()
     MatMul(A, B, C);
 
