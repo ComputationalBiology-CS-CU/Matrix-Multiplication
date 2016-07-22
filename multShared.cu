@@ -238,9 +238,9 @@ int main(int argc, char const *argv[])
     }
     cout << endl;
 
-    delete [] A.elements;
-    delete [] B.elements;
-    delete [] C.elements;
+    delete[] A.elements;
+    delete[] B.elements;
+    delete[] C.elements;
     
     return 0;
 }
