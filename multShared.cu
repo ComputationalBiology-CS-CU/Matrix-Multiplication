@@ -64,23 +64,28 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 
     // Load A and B to device memory
     Matrix d_A;
-    d_A.width = d_A.stride = A.width; d_A.height = A.height;
+    d_A.width = d_A.stride = A.width; 
+    d_A.height = A.height;
     size_t size = A.width * A.height * sizeof(float);
-    cudaMalloc(&d_A.elements, size);
-    cudaMemcpy(d_A.elements, A.elements, size,
-               cudaMemcpyHostToDevice);
+    cudaError_t err = cudaMalloc(&d_A.elements, size);
+    cout << "CUDA malloc A: " << cudaGetErrorString(err) << endl;
+    cudaMemcpy(d_A.elements, A.elements, size, cudaMemcpyHostToDevice);
+    
     Matrix d_B;
-    d_B.width = d_B.stride = B.width; d_B.height = B.height;
+    d_B.width = d_B.stride = B.width; 
+    d_B.height = B.height;
     size = B.width * B.height * sizeof(float);
-    cudaMalloc(&d_B.elements, size);
-    cudaMemcpy(d_B.elements, B.elements, size,
-    cudaMemcpyHostToDevice);
+    err = cudaMalloc(&d_B.elements, size);
+    cout << "CUDA malloc B: " << cudaGetErrorString(err) << endl;
+    cudaMemcpy(d_B.elements, B.elements, size, cudaMemcpyHostToDevice);
 
     // Allocate C in device memory
     Matrix d_C;
-    d_C.width = d_C.stride = C.width; d_C.height = C.height;
+    d_C.width = d_C.stride = C.width; 
+    d_C.height = C.height;
     size = C.width * C.height * sizeof(float);
-    cudaMalloc(&d_C.elements, size);
+    err = cudaMalloc(&d_C.elements, size);
+    cout << "CUDA malloc C: " << cudaGetErrorString(err) << endl;
 
     // Invoke kernel
     dim3 dimBlock(BLOCK_SIZE, BLOCK_SIZE);
@@ -90,6 +95,8 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     cudaEventRecord(start, 0);
 
     MatMulKernel<<<dimGrid, dimBlock>>>(d_A, d_B, d_C);
+    err = cudaThreadSynchronize();
+    cout << "Run kernel: " << cudaGetErrorString(err) << endl;
 
     // Stop GPU timer
     cudaEventRecord(stop, 0);
@@ -101,8 +108,8 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     cout << fixed << "It took me " << time << " milliseconds" << endl;
 
     // Read C from device memory
-    cudaMemcpy(C.elements, d_C.elements, size,
-               cudaMemcpyDeviceToHost);
+    err = cudaMemcpy(C.elements, d_C.elements, size, cudaMemcpyDeviceToHost);
+    cout << "Copy C off of device: " << cudaGetErrorString(err) << endl;
 
     // Free device memory
     cudaFree(d_A.elements);
@@ -202,11 +209,6 @@ int main(int argc, char const *argv[])
     for (i = 0; i < B.height; ++i) 
         for (j = 0; j < B.width; ++j) 
             B.elements[i * B.width + j] = float(rand() % 100);
-
-    // Fill C with 0's
-    for (i = 0; i < C.height; ++i)
-        for (j = 0; j < C.width; ++j)
-            C.elements[i * C.width + j] = 0.0;
 
     // Call MatMul(), and therefore MatMulKernel()
     MatMul(A, B, C);
