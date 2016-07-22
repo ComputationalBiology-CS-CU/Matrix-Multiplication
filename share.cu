@@ -55,9 +55,6 @@ __device__ void SetElement(Matrix A, int row, int col,
 // Matrix dimensions are assumed to be multiples of BLOCK_SIZE
 void MatMul(const Matrix A, const Matrix B, Matrix C)
 {
-    cudaEventCreate(&start);
-    cudaEventCreate(&stop);
-
     // Load A and B to device memory
     Matrix d_A;
     d_A.width = d_A.stride = A.width; 
