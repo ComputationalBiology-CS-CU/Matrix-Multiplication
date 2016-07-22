@@ -131,7 +131,7 @@ int main(int argc, char const *argv[])
     // Print time multiplication took
     t = clock() - t;
     cout << "It took me " << fixed << ((float)t)/CLOCKS_PER_SEC;
-    cout << " seconds." << endl;
+    cout << " seconds.\n" << endl;
 
     // Print A, B, and C
     for (i = 0; i < min(10, A.height); ++i) {
