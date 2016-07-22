@@ -69,23 +69,25 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     size_t size = A.width * A.height * sizeof(float);
     cudaError_t err = cudaMalloc(&d_A.elements, size);
     cout << "CUDA malloc A: " << cudaGetErrorString(err) << endl;
-    cudaMemcpy(d_A.elements, A.elements, size, cudaMemcpyHostToDevice);
-    
+    err = cudaMemcpy(d_A.elements, A.elements, size, cudaMemcpyHostToDevice);
+    cout << "Copy A to device: " << cudaGetErrorString(err) << "\n" << endl;
+
     Matrix d_B;
     d_B.width = d_B.stride = B.width; 
     d_B.height = B.height;
     size = B.width * B.height * sizeof(float);
     err = cudaMalloc(&d_B.elements, size);
     cout << "CUDA malloc B: " << cudaGetErrorString(err) << endl;
-    cudaMemcpy(d_B.elements, B.elements, size, cudaMemcpyHostToDevice);
-
+    err = cudaMemcpy(d_B.elements, B.elements, size, cudaMemcpyHostToDevice);
+    cout << "Copy B to device: " << cudaGetErrorString(err) << "\n" << endl;
+    
     // Allocate C in device memory
     Matrix d_C;
     d_C.width = d_C.stride = C.width; 
     d_C.height = C.height;
     size = C.width * C.height * sizeof(float);
     err = cudaMalloc(&d_C.elements, size);
-    cout << "CUDA malloc C: " << cudaGetErrorString(err) << endl;
+    cout << "CUDA malloc C: " << cudaGetErrorString(err) << "\n" << endl;
 
     // Invoke kernel
     dim3 dimBlock(BLOCK_SIZE, BLOCK_SIZE);
@@ -96,7 +98,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 
     MatMulKernel<<<dimGrid, dimBlock>>>(d_A, d_B, d_C);
     err = cudaThreadSynchronize();
-    cout << "Run kernel: " << cudaGetErrorString(err) << endl;
+    cout << "Run kernel: " << cudaGetErrorString(err) << "\n" << endl;
 
     // Stop GPU timer
     cudaEventRecord(stop, 0);
@@ -105,11 +107,11 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     cudaEventDestroy(start);
     cudaEventDestroy(stop);
 
-    cout << fixed << "It took me " << time << " milliseconds" << endl;
+    cout << fixed << "It took me " << time << " milliseconds\n" << endl;
 
     // Read C from device memory
     err = cudaMemcpy(C.elements, d_C.elements, size, cudaMemcpyDeviceToHost);
-    cout << "Copy C off of device: " << cudaGetErrorString(err) << endl;
+    cout << "Copy C off of device: " << cudaGetErrorString(err) << "\n" << endl;
 
     // Free device memory
     cudaFree(d_A.elements);
