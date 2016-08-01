@@ -117,11 +117,11 @@ int main(int argc, char const *argv[])
     // Fill A and B with random floats
     for (i = 0; i < A.height; ++i)
         for (j = 0; j < A.width; ++j)
-            A.elements[i * A.width + j] = float(rand() % 100);
+            A.elements[i * A.width + j] = float(rand() / RAND_MAX * 100);
 
     for (i = 0; i < B.height; ++i)
         for (j = 0; j < B.width; ++j)
-            B.elements[i * B.width + j] = float(rand() % 100);
+            B.elements[i * B.width + j] = float(rand() / RAND_MAX * 100);
 
     // Call MatMul(), and therefore MatMulKernel()
     t = clock();
