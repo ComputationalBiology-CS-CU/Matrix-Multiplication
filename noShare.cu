@@ -7,6 +7,7 @@
 #include <ctime>
 #include <cstdio>
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
 // Matrices are stored in row-major order:
@@ -130,13 +131,15 @@ int main(int argc, char const *argv[])
 
     // Print time multiplication took
     t = clock() - t;
-    cout << "It took me " << fixed << ((float)t)/CLOCKS_PER_SEC;
+    cout << "It took me ";
+    cout << fixed << setprecision(2) << ((float)t)/CLOCKS_PER_SEC;
     cout << " seconds.\n" << endl;
 
     // Print A, B, and C
     for (i = 0; i < min(10, A.height); ++i) {
         for (j = 0; j < min(10, A.width); ++j)
-            cout << fixed << A.elements[i * A.width + j] << "\t";
+            cout << fixed;
+            cout << setprecision(3) << A.elements[i * A.width + j] << "\t";
         
         cout << endl;
     }
@@ -144,7 +147,8 @@ int main(int argc, char const *argv[])
     
     for (i = 0; i < min(10, B.height); ++i) {
         for (j = 0; j < min(10, B.width); ++j)
-            cout << fixed << B.elements[i * B.width + j] << "\t";
+            cout << fixed;
+            cout << setprecision(3) << B.elements[i * B.width + j] << "\t";
 
         cout << endl;
     }
@@ -152,7 +156,8 @@ int main(int argc, char const *argv[])
 
     for (i = 0; i < min(10, C.height); ++i) {
         for (j = 0; j < min(10, C.width); ++j)
-            cout << fixed << C.elements[i * C.width + j] << "\t";
+            cout << fixed;
+            cout << setprecision(3) << C.elements[i * C.width + j] << "\t";
 
         cout << endl;
     }
