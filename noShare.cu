@@ -19,7 +19,7 @@ typedef struct {
 } Matrix;
 
 // Thread block size
-#define BLOCK_SIZE 10
+#define BLOCK_SIZE 20
 
 // Forward declaration of the matrix multiplication kernel
 __global__ void MatMulKernel(const Matrix, const Matrix, Matrix);
