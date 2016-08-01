@@ -137,27 +137,30 @@ int main(int argc, char const *argv[])
 
     // Print A, B, and C
     for (i = 0; i < min(10, A.height); ++i) {
-        for (j = 0; j < min(10, A.width); ++j)
-            cout << fixed;
-            cout << setprecision(3) << A.elements[i * A.width + j] << "\t";
+        for (j = 0; j < min(10, A.width); ++j) {
+            cout << fixed << setprecision(3) << A.elements[i * A.width + j];
+            cout << "\t";
+        }
         
         cout << endl;
     }
     cout << endl;
     
     for (i = 0; i < min(10, B.height); ++i) {
-        for (j = 0; j < min(10, B.width); ++j)
-            cout << fixed;
-            cout << setprecision(3) << B.elements[i * B.width + j] << "\t";
+        for (j = 0; j < min(10, B.width); ++j) {
+            cout << fixed << setprecision(3) << B.elements[i * B.width + j];
+            cout << "\t";
+        }
 
         cout << endl;
     }
     cout << endl;
 
     for (i = 0; i < min(10, C.height); ++i) {
-        for (j = 0; j < min(10, C.width); ++j)
-            cout << fixed;
-            cout << setprecision(3) << C.elements[i * C.width + j] << "\t";
+        for (j = 0; j < min(10, C.width); ++j) {
+            cout << fixed << setprecision(3) << C.elements[i * C.width + j];
+            cout << "\t";
+        }
 
         cout << endl;
     }
