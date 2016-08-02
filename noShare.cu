@@ -7,6 +7,7 @@
 #include <ctime>
 #include <cstdio>
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
 // Matrices are stored in row-major order:
@@ -18,7 +19,7 @@ typedef struct {
 } Matrix;
 
 // Thread block size
-#define BLOCK_SIZE 10
+#define BLOCK_SIZE 5
 
 // Forward declaration of the matrix multiplication kernel
 __global__ void MatMulKernel(const Matrix, const Matrix, Matrix);
@@ -119,11 +120,11 @@ int main(int argc, char const *argv[])
     // Fill A and B with random floats
     for (i = 0; i < A.height; ++i)
         for (j = 0; j < A.width; ++j)
-            A.elements[i * A.width + j] = float(rand() % 100);
+            A.elements[i * A.width + j] = ((float)rand() / (float)RAND_MAX) * 100;
 
     for (i = 0; i < B.height; ++i)
         for (j = 0; j < B.width; ++j)
-            B.elements[i * B.width + j] = float(rand() % 100);
+            B.elements[i * B.width + j] = ((float)rand() / (float)RAND_MAX) * 100;
 
     // Call MatMul(), and therefore MatMulKernel()
     t = clock();
@@ -132,29 +133,36 @@ int main(int argc, char const *argv[])
 
     // Print time multiplication took
     t = clock() - t;
-    cout << "It took me " << fixed << ((float)t)/CLOCKS_PER_SEC;
+    cout << "It took me ";
+    cout << fixed << setprecision(2) << ((float)t)/CLOCKS_PER_SEC;
     cout << " seconds.\n" << endl;
 
     // Print A, B, and C
     for (i = 0; i < min(10, A.height); ++i) {
-        for (j = 0; j < min(10, A.width); ++j)
-            cout << fixed << A.elements[i * A.width + j] << "\t";
+        for (j = 0; j < min(10, A.width); ++j) {
+            cout << fixed << setprecision(3) << A.elements[i * A.width + j];
+            cout << "\t";
+        }
         
         cout << endl;
     }
     cout << endl;
     
     for (i = 0; i < min(10, B.height); ++i) {
-        for (j = 0; j < min(10, B.width); ++j)
-            cout << fixed << B.elements[i * B.width + j] << "\t";
+        for (j = 0; j < min(10, B.width); ++j) {
+            cout << fixed << setprecision(3) << B.elements[i * B.width + j];
+            cout << "\t";
+        }
 
         cout << endl;
     }
     cout << endl;
 
     for (i = 0; i < min(10, C.height); ++i) {
-        for (j = 0; j < min(10, C.width); ++j)
-            cout << fixed << C.elements[i * C.width + j] << "\t";
+        for (j = 0; j < min(10, C.width); ++j) {
+            cout << fixed << setprecision(3) << C.elements[i * C.width + j];
+            cout << "\t";
+        }
 
         cout << endl;
     }
