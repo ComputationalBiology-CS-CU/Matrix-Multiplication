@@ -106,61 +106,60 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     int checkRow = blockIdx.y * blockDim.y + threadIdx.y;
     int checkCol = blockIdx.x * blockDim.x + threadIdx.x;
 
-    if (checkRow >= A.height || checkCol >= B.width)
-        return;
+    if (checkRow < A.height && checkCol < B.width) {
+        // Block row and column
+        int blockRow = blockIdx.y;
+        int blockCol = blockIdx.x;
 
-    // Block row and column
-    int blockRow = blockIdx.y;
-    int blockCol = blockIdx.x;
+        // Each thread block computes one sub-matrix Csub of C
+        Matrix Csub = GetSubMatrix(C, blockRow, blockCol);
 
-    // Each thread block computes one sub-matrix Csub of C
-    Matrix Csub = GetSubMatrix(C, blockRow, blockCol);
+        // Each thread computes one element of Csub
+        // by accumulating results into Cvalue
+        float Cvalue = 0;
 
-    // Each thread computes one element of Csub
-    // by accumulating results into Cvalue
-    float Cvalue = 0;
+        // Thread row and column within Csub
+        int row = threadIdx.y;
+        int col = threadIdx.x;
 
-    // Thread row and column within Csub
-    int row = threadIdx.y;
-    int col = threadIdx.x;
+        // Loop over all the sub-matrices of A and B that are
+        // required to compute Csub
+        // Multiply each pair of sub-matrices together
+        // and accumulate the results
+        for (int m = 0; m < (A.width / BLOCK_SIZE); ++m) {
 
-    // Loop over all the sub-matrices of A and B that are
-    // required to compute Csub
-    // Multiply each pair of sub-matrices together
-    // and accumulate the results
-    for (int m = 0; m < (A.width / BLOCK_SIZE); ++m) {
+            // Get sub-matrix Asub of A
+            Matrix Asub = GetSubMatrix(A, blockRow, m);
 
-        // Get sub-matrix Asub of A
-        Matrix Asub = GetSubMatrix(A, blockRow, m);
+            // Get sub-matrix Bsub of B
+            Matrix Bsub = GetSubMatrix(B, m, blockCol);
 
-        // Get sub-matrix Bsub of B
-        Matrix Bsub = GetSubMatrix(B, m, blockCol);
+            // Shared memory used to store Asub and Bsub respectively
+            __shared__ float As[BLOCK_SIZE][BLOCK_SIZE];
+            __shared__ float Bs[BLOCK_SIZE][BLOCK_SIZE];
 
-        // Shared memory used to store Asub and Bsub respectively
-        __shared__ float As[BLOCK_SIZE][BLOCK_SIZE];
-        __shared__ float Bs[BLOCK_SIZE][BLOCK_SIZE];
+            // Load Asub and Bsub from device memory to shared memory
+            // Each thread loads one element of each sub-matrix
+            As[row][col] = GetElement(Asub, row, col);
+            Bs[row][col] = GetElement(Bsub, row, col);
 
-        // Load Asub and Bsub from device memory to shared memory
-        // Each thread loads one element of each sub-matrix
-        As[row][col] = GetElement(Asub, row, col);
-        Bs[row][col] = GetElement(Bsub, row, col);
+            // Synchronize to make sure the sub-matrices are loaded
+            // before starting the computation
+            __syncthreads();
+            // Multiply Asub and Bsub together
+            for (int e = 0; e < BLOCK_SIZE; ++e)
+                Cvalue += As[row][e] * Bs[e][col];
 
-        // Synchronize to make sure the sub-matrices are loaded
-        // before starting the computation
-        __syncthreads();
-        // Multiply Asub and Bsub together
-        for (int e = 0; e < BLOCK_SIZE; ++e)
-            Cvalue += As[row][e] * Bs[e][col];
+            // Synchronize to make sure that the preceding
+            // computation is done before loading two new
+            // sub-matrices of A and B in the next iteration
+            __syncthreads();
+        }
 
-        // Synchronize to make sure that the preceding
-        // computation is done before loading two new
-        // sub-matrices of A and B in the next iteration
-        __syncthreads();
+        // Write Csub to device memory
+        // Each thread writes one element
+        SetElement(Csub, row, col, Cvalue);
     }
-
-    // Write Csub to device memory
-    // Each thread writes one element
-    SetElement(Csub, row, col, Cvalue);
 }
 
 int main(int argc, char const *argv[])
