@@ -102,6 +102,13 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 // Matrix multiplication kernel called by MatMul()
  __global__ void MatMulKernel(Matrix A, Matrix B, Matrix C)
 {
+    // Check if thread lies within matrix or not
+    int checkRow = blockIdx.y * blockDim.y + threadIdx.y;
+    int checkCol = blockIdx.x * blockDim.x + threadIdx.x;
+
+    if (checkRow >= A.height || checkCol >= B.width)
+        return;
+
     // Block row and column
     int blockRow = blockIdx.y;
     int blockCol = blockIdx.x;
@@ -173,15 +180,15 @@ int main(int argc, char const *argv[])
     b2 = atoi(argv[3]); // B's width
 
     A.height = a1;
-    A.width = a2;
+    A.width = A.stride = a2;
     A.elements = new float[A.width * A.height];
 
     B.height = b1;
-    B.width = b2;
+    B.width = B.stride = b2;
     B.elements = new float[B.width * B. height];
 
     C.height = A.height;
-    C.width = B.width;
+    C.width = C.stride = B.width;
     C.elements = new float[C.width * C.height];
 
     // Fill A and B with random floats
