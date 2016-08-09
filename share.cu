@@ -102,29 +102,42 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 // Matrix multiplication kernel called by MatMul()
  __global__ void MatMulKernel(Matrix A, Matrix B, Matrix C)
 {
-    /*
     // Shared memory used to store Asub and Bsub respectively
     __shared__ float As[BLOCK_SIZE][BLOCK_SIZE];
     __shared__ float Bs[BLOCK_SIZE][BLOCK_SIZE];
 
+    int row = blockIdx.y * BLOCK_SIZE + threadIdx.y;
+    int col = blockIdx.x * BLOCK_SIZE + threadIdx.x;
 
     // Each thread computes one element of Csub
     // by accumulating results into Cvalue
-    float Cvalue = 0;
+    float Cvalue = 0.0;
 
     for (int i = 0; i < (A.width - 1)/BLOCK_SIZE + 1; ++i) {
-        if ()
+        int temp = i * BLOCK_SIZE + threadIdx.x;
+        if (row < A.height && temp < A.width)
+            As[threadIdx.y][threadIdx.x] = A[row * A.width + temp];
+        else
+            As[threadIdx.y][threadIdx.x] = 0.0;
+
+        temp = i * BLOCK_SIZE + threadIdx.y;
+        if (col < B.width && temp < B.height)
+            Bs[threadIdx.y][threadIdx.x] = B[temp * B.width + col];
+        else
+            Bs[threadIdx.y][threadIdx.x] = 0.0;
+
+        __syncthreads();
+
+        for (int j = 0; j < BLOCK_SIZE; ++j)
+            Cvalue += As[threadIdx.y][k] * Bs[k][threadIdx.x];
+
+        __syncthreads();
     }
-    */
 
-    int checkRow = blockIdx.y * BLOCK_SIZE + threadIdx.y;
-    int checkCol = blockIdx.x * BLOCK_SIZE + threadIdx.x;
+    if (row < C.height && col < C.width)
+        C[row * C.width + col] = Cvalue;
 
-    if (checkRow >= A.height || checkCol >= B.width)
-        return;
-
-
-    
+    /*
     // Block row and column
     int blockRow = blockIdx.y;
     int blockCol = blockIdx.x;
@@ -177,7 +190,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     // Write Csub to device memory
     // Each thread writes one element
     SetElement(Csub, row, col, Cvalue);
-    
+    */
 }
 
 int main(int argc, char const *argv[])
