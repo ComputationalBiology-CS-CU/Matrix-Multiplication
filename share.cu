@@ -19,7 +19,7 @@ typedef struct {
 } Matrix;
 
 // Thread block size
-#define BLOCK_SIZE 2
+#define BLOCK_SIZE 20
 
 // Forward declaration of the matrix multiplication kernel
 __global__ void MatMulKernel(const Matrix, const Matrix, Matrix);
@@ -48,19 +48,6 @@ __device__ void SetElement(Matrix A, int row, int col,
     Asub.stride   = A.stride;
     Asub.elements = &A.elements[A.stride * BLOCK_SIZE * row
                                          + BLOCK_SIZE * col];
-
-    // Check if Asub.elements all lie w/i A
-    //-----------------------------------------------------------------------//
-    /*
-    for (int i = 0; i <= BLOCK_SIZE; ++i) {
-        for (int j = 0; j <= BLOCK_SIZE; ++j) {
-            if (something) {
-                Asub.elements[i * A.stride + j]
-            }
-            float temp = Asub.elements[i *]
-        }
-    }
-    */
 
     return Asub;
 }
@@ -152,6 +139,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     if (row < C.height && col < C.width)
         C.elements[row * C.width + col] = Cvalue;
     
+    /*---Original code from CUDA C Programming Guide---*/
     /*
     // Block row and column
     int blockRow = blockIdx.y;
@@ -239,11 +227,11 @@ int main(int argc, char const *argv[])
     // Fill A and B with random floats
     for (i = 0; i < A.height; ++i) 
         for (j = 0; j < A.width; ++j) 
-            A.elements[i * A.width + j] = float(rand() % 100);
+            A.elements[i * A.width + j] = ((float)rand() / (float)RAND_MAX) * 100;
 
     for (i = 0; i < B.height; ++i) 
         for (j = 0; j < B.width; ++j) 
-            B.elements[i * B.width + j] = float(rand() % 100);
+            B.elements[i * B.width + j] = ((float)rand() / (float)RAND_MAX) * 100;
 
     // Call MatMul(), and therefore MatMulKernel()
     t = clock();
