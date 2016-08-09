@@ -51,6 +51,16 @@ __device__ void SetElement(Matrix A, int row, int col,
 
     // Check if Asub.elements all lie w/i A
     //-----------------------------------------------------------------------//
+    /*
+    for (int i = 0; i <= BLOCK_SIZE; ++i) {
+        for (int j = 0; j <= BLOCK_SIZE; ++j) {
+            if (something) {
+                Asub.elements[i * A.stride + j]
+            }
+            float temp = Asub.elements[i *]
+        }
+    }
+    */
 
     return Asub;
 }
@@ -106,7 +116,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 // Matrix multiplication kernel called by MatMul()
  __global__ void MatMulKernel(Matrix A, Matrix B, Matrix C)
 {
-    /*
+    
     // Shared memory used to store Asub and Bsub respectively
     __shared__ float As[BLOCK_SIZE][BLOCK_SIZE];
     __shared__ float Bs[BLOCK_SIZE][BLOCK_SIZE];
@@ -141,8 +151,8 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 
     if (row < C.height && col < C.width)
         C[row * C.width + col] = Cvalue;
-    */
     
+    /*
     // Block row and column
     int blockRow = blockIdx.y;
     int blockCol = blockIdx.x;
@@ -195,6 +205,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     // Write Csub to device memory
     // Each thread writes one element
     SetElement(Csub, row, col, Cvalue);
+    */
 }
 
 int main(int argc, char const *argv[])
