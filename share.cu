@@ -19,7 +19,7 @@ typedef struct {
 } Matrix;
 
 // Thread block size
-#define BLOCK_SIZE 10
+#define BLOCK_SIZE 2
 
 // Forward declaration of the matrix multiplication kernel
 __global__ void MatMulKernel(const Matrix, const Matrix, Matrix);
@@ -48,6 +48,10 @@ __device__ void SetElement(Matrix A, int row, int col,
     Asub.stride   = A.stride;
     Asub.elements = &A.elements[A.stride * BLOCK_SIZE * row
                                          + BLOCK_SIZE * col];
+
+    // Check if Asub.elements all lie w/i A
+    //-----------------------------------------------------------------------//
+
     return Asub;
 }
 
@@ -102,6 +106,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 // Matrix multiplication kernel called by MatMul()
  __global__ void MatMulKernel(Matrix A, Matrix B, Matrix C)
 {
+    /*
     // Shared memory used to store Asub and Bsub respectively
     __shared__ float As[BLOCK_SIZE][BLOCK_SIZE];
     __shared__ float Bs[BLOCK_SIZE][BLOCK_SIZE];
@@ -136,8 +141,8 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 
     if (row < C.height && col < C.width)
         C[row * C.width + col] = Cvalue;
-
-    /*
+    */
+    
     // Block row and column
     int blockRow = blockIdx.y;
     int blockCol = blockIdx.x;
@@ -190,7 +195,6 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     // Write Csub to device memory
     // Each thread writes one element
     SetElement(Csub, row, col, Cvalue);
-    */
 }
 
 int main(int argc, char const *argv[])
