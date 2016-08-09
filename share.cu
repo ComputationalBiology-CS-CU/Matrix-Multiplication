@@ -102,13 +102,29 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 // Matrix multiplication kernel called by MatMul()
  __global__ void MatMulKernel(Matrix A, Matrix B, Matrix C)
 {
-    // Check if thread lies within matrix or not
     /*
-    int checkRow = blockIdx.y * blockDim.y + threadIdx.y;
-    int checkCol = blockIdx.x * blockDim.x + threadIdx.x;
+    // Shared memory used to store Asub and Bsub respectively
+    __shared__ float As[BLOCK_SIZE][BLOCK_SIZE];
+    __shared__ float Bs[BLOCK_SIZE][BLOCK_SIZE];
 
-    if (checkRow < A.height && checkCol < B.width) {}
+
+    // Each thread computes one element of Csub
+    // by accumulating results into Cvalue
+    float Cvalue = 0;
+
+    for (int i = 0; i < (A.width - 1)/BLOCK_SIZE + 1; ++i) {
+        if ()
+    }
     */
+
+    int checkRow = blockIdx.y * BLOCK_SIZE + threadIdx.y;
+    int checkCol = blockIdx.x * BLOCK_SIZE + threadIdx.x;
+
+    if (checkRow >= A.height || checkCol >= B.width)
+        return;
+
+
+    
     // Block row and column
     int blockRow = blockIdx.y;
     int blockCol = blockIdx.x;
@@ -161,6 +177,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     // Write Csub to device memory
     // Each thread writes one element
     SetElement(Csub, row, col, Cvalue);
+    
 }
 
 int main(int argc, char const *argv[])
