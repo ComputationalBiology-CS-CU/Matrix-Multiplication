@@ -129,7 +129,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
         __syncthreads();
 
         for (int j = 0; j < BLOCK_SIZE; ++j)
-            Cvalue += As[threadIdx.y][k] * Bs[k][threadIdx.x];
+            Cvalue += As[threadIdx.y][j] * Bs[j][threadIdx.x];
 
         __syncthreads();
     }
