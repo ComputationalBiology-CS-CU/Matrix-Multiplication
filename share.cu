@@ -131,13 +131,13 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     for (int i = 0; i < (A.width - 1)/BLOCK_SIZE + 1; ++i) {
         int temp = i * BLOCK_SIZE + threadIdx.x;
         if (row < A.height && temp < A.width)
-            As[threadIdx.y][threadIdx.x] = A[row * A.width + temp];
+            As[threadIdx.y][threadIdx.x] = A.elements[row * A.width + temp];
         else
             As[threadIdx.y][threadIdx.x] = 0.0;
 
         temp = i * BLOCK_SIZE + threadIdx.y;
         if (col < B.width && temp < B.height)
-            Bs[threadIdx.y][threadIdx.x] = B[temp * B.width + col];
+            Bs[threadIdx.y][threadIdx.x] = B.elements[temp * B.width + col];
         else
             Bs[threadIdx.y][threadIdx.x] = 0.0;
 
@@ -150,7 +150,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     }
 
     if (row < C.height && col < C.width)
-        C[row * C.width + col] = Cvalue;
+        C.elements[row * C.width + col] = Cvalue;
     
     /*
     // Block row and column
