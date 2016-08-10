@@ -201,7 +201,7 @@ int main(int argc, char const *argv[])
 {
     Matrix A, B, C, D;
     int a1, a2, b1, b2;
-    int i, j;
+    int i, j, k;
     float sum, param;
 
     srand(time(NULL));
@@ -250,7 +250,7 @@ int main(int argc, char const *argv[])
     MatMul(A, B, D);
 
     // Compare matrices C and D -- they should be almost identical
-    for (i = 0; i < C.heightl ++i) {
+    for (i = 0; i < C.height; ++i) {
         for (j = 0; j < C.width; ++j) {
             param = C.elements[i * C.width + j] - D.elements[i * D.width + j];
             sum += sqrt(param);
