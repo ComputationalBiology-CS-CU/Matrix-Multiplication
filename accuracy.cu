@@ -249,7 +249,10 @@ int main(int argc, char const *argv[])
     // Call MatMul(), and therefore MatMulKernel()
     MatMul(A, B, D);
 
+    cout << "Program is working up until accuracy calculation." << endl;
+
     // Compare matrices C and D -- they should be almost identical
+    /*
     cout << "Accuracy is " << endl;
 
     for (i = 0; i < C.height; ++i) {
@@ -259,6 +262,7 @@ int main(int argc, char const *argv[])
         }
     }
     cout << fixed << sum << endl;
+    */
 
     delete[] A.elements;
     delete[] B.elements;
