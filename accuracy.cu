@@ -250,13 +250,14 @@ int main(int argc, char const *argv[])
     MatMul(A, B, D);
 
     // Compare matrices C and D -- they should be almost identical
+    cout << "Accuracy is ";
+
     for (i = 0; i < C.height; ++i) {
         for (j = 0; j < C.width; ++j) {
             param = C.elements[i * C.width + j] - D.elements[i * D.width + j];
             sum += sqrt(param);
         }
     }
-    cout << "Accuracy is ";
     cout << fixed << sum << endl;
 
     delete[] A.elements;
