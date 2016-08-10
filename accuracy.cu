@@ -227,7 +227,7 @@ int main(int argc, char const *argv[])
 
     D.height = A.height;
     D.width = D.stride = B.width;
-    D.elements = new float[C.width * C.height];
+    D.elements = new float[D.width * D.height];
 
     // Fill A and B with random floats
     for (i = 0; i < A.height; ++i) 
@@ -238,14 +238,17 @@ int main(int argc, char const *argv[])
         for (j = 0; j < B.width; ++j) 
             B.elements[i * B.width + j] = ((float)rand() / (float)RAND_MAX) * 100;
 
+    cout << "Program is working up until CPU calculation." << endl;
+
     // Vanilla C++ matrix multiplication
+    /*
     for (i = 0; i < A.height; ++i)
         for (j = 0; j < B.width; ++j)
             for (k = 0; k < A.width; ++k) {
                 C.elements[i * C.width + j] += A.elements[i * A.width + k] * 
                     B.elements[k * B.width + j];
             }
-
+    */
     cout << "Program is working up until GPU calculation." << endl;
 
     // Call MatMul(), and therefore MatMulKernel()
