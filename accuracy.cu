@@ -270,7 +270,23 @@ int main(int argc, char const *argv[])
     }
     cout << fixed << sum << endl;
 
-    // Print C and D
+    // Print matrices A, B, C, and D
+    for (i = 0; i < min(10, A.height); ++i) {
+        for (j = 0; j < min(10, A.width); ++j)
+            cout << fixed << A.elements[i * A.width + j] << "\t";
+        
+        cout << endl;
+    }
+    cout << endl;
+    
+    for (i = 0; i < min(10, B.height); ++i) {
+        for (j = 0; j < min(10, B.width); ++j)
+            cout << fixed << B.elements[i * B.width + j] << "\t";
+
+        cout << endl;
+    }
+    cout << endl;
+    
     for (int i = 0; i < min(10, C.height); ++i) {
         for (int j = 0; j < min(10, C.width); ++j) {
             cout << fixed << C.elements[i * C.width + j] << "\t";
