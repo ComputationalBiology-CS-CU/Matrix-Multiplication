@@ -237,11 +237,11 @@ int main(int argc, char const *argv[])
     for (i = 0; i < B.height; ++i) 
         for (j = 0; j < B.width; ++j) 
             B.elements[i * B.width + j] = ((float)rand() / (float)RAND_MAX) * 100;
-
+    /*
     for (i = 0; i < D.height; ++i) 
         for (j = 0; j < D.width; ++j) 
             D.elements[i * D.width + j] = ((float)rand() / (float)RAND_MAX) * 100;
-
+    */
     cout << "Program is working up until CPU calculation." << endl;
 
     // Vanilla C++ matrix multiplication
@@ -255,7 +255,7 @@ int main(int argc, char const *argv[])
     cout << "Program is working up until GPU calculation." << endl;
 
     // Call MatMul(), and therefore MatMulKernel()
-    //MatMul(A, B, D);
+    MatMul(A, B, D);
 
     cout << "Program is working up until accuracy calculation." << endl;
 
