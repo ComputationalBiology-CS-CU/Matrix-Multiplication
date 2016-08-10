@@ -245,23 +245,21 @@ int main(int argc, char const *argv[])
     cout << "Program is working up until CPU calculation." << endl;
 
     // Vanilla C++ matrix multiplication
-    /*
     for (i = 0; i < A.height; ++i)
         for (j = 0; j < B.width; ++j)
             for (k = 0; k < A.width; ++k) {
                 C.elements[i * C.width + j] += A.elements[i * A.width + k] * 
                     B.elements[k * B.width + j];
             }
-    */
+
     cout << "Program is working up until GPU calculation." << endl;
 
     // Call MatMul(), and therefore MatMulKernel()
-    MatMul(A, B, D);
+    //MatMul(A, B, D);
 
     cout << "Program is working up until accuracy calculation." << endl;
 
     // Compare matrices C and D -- they should be almost identical
-
     cout << "Accuracy is " << endl;
 
     for (i = 0; i < C.height; ++i) {
@@ -272,7 +270,6 @@ int main(int argc, char const *argv[])
     }
     cout << fixed << sum << endl;
     
-
     delete[] A.elements;
     delete[] B.elements;
     delete[] C.elements;
