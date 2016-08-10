@@ -7,4 +7,4 @@
 
 
 # the program to run
-./mult 1 1000000 400
+./noShare.o 1600 1000000 400

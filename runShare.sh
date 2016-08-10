@@ -7,4 +7,4 @@
 
 
 # the program to run
-./a.out 1 1000000 400
+./share.o 32 1000000 400
