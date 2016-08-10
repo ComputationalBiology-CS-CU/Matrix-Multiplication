@@ -139,7 +139,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     if (row < C.height && col < C.width)
         C.elements[row * C.width + col] = Cvalue;
     
-    /*---Original code from CUDA C Programming Guide---*/
+    /*-+-+-Original code from CUDA C Programming Guide-+-+-*/
     /*
     // Block row and column
     int blockRow = blockIdx.y;
