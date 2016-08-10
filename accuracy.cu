@@ -246,8 +246,10 @@ int main(int argc, char const *argv[])
                     B.elements[k * B.width + j];
             }
 
+    cout << "Program is working up until GPU calculation." << endl;
+
     // Call MatMul(), and therefore MatMulKernel()
-    MatMul(A, B, D);
+    //MatMul(A, B, D);
 
     cout << "Program is working up until accuracy calculation." << endl;
 
