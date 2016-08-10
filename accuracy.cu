@@ -250,7 +250,7 @@ int main(int argc, char const *argv[])
     MatMul(A, B, D);
 
     // Compare matrices C and D -- they should be almost identical
-    cout << "Accuracy is ";
+    cout << "Accuracy is " << endl;
 
     for (i = 0; i < C.height; ++i) {
         for (j = 0; j < C.width; ++j) {
