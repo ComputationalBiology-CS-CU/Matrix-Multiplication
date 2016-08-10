@@ -202,7 +202,8 @@ int main(int argc, char const *argv[])
     Matrix A, B, C, D;
     int a1, a2, b1, b2;
     int i, j, k;
-    float sum, param;
+    float sum = 0.0;
+    float param = 0.0;
 
     srand(time(NULL));
 
@@ -242,7 +243,6 @@ int main(int argc, char const *argv[])
         for (j = 0; j < D.width; ++j) 
             D.elements[i * D.width + j] = ((float)rand() / (float)RAND_MAX) * 100;
     */
-    cout << "Program is working up until CPU calculation." << endl;
 
     // Vanilla C++ matrix multiplication
     for (i = 0; i < A.height; ++i)
@@ -252,12 +252,8 @@ int main(int argc, char const *argv[])
                     B.elements[k * B.width + j];
             }
 
-    cout << "Program is working up until GPU calculation." << endl;
-
     // Call MatMul(), and therefore MatMulKernel()
     MatMul(A, B, D);
-
-    cout << "Program is working up until accuracy calculation." << endl;
 
     // Compare matrices C and D -- they should be almost identical
     cout << "Accuracy is ";
@@ -286,7 +282,7 @@ int main(int argc, char const *argv[])
         cout << endl;
     }
     cout << endl;
-    
+
     for (int i = 0; i < min(10, C.height); ++i) {
         for (int j = 0; j < min(10, C.width); ++j) {
             cout << fixed << C.elements[i * C.width + j] << "\t";
