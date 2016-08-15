@@ -255,8 +255,6 @@ int main(int argc, char const *argv[])
     MatMul(A, B, D);
 
     // Compare matrices C and D -- they should be almost identical
-    cout << "Accuracy is: ";
-
     for (i = 0; i < C.height; ++i) {
         for (j = 0; j < C.width; ++j) {
             param = 
@@ -267,15 +265,15 @@ int main(int argc, char const *argv[])
 
             square = pow(param, 2);
             sum += square;
-            /*
-            if (i < 10 && j < 10) {
-                cout << "param is " << param << endl;
-                cout << "square is " << square << endl;
+            
+            if (i < 3 && j < 3) {
+                cout << "param is " << param << "; ";
+                cout << "square is " << square << "; ";
                 cout << "sum is " << sum << endl;
             }
-            */
         }
     }
+    cout << "Accuracy is: ";
     cout << fixed << sum << endl;
 
     // Print matrices A, B, C, and D
