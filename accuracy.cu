@@ -20,7 +20,7 @@ typedef struct {
 } Matrix;
 
 // Thread block size
-#define BLOCK_SIZE 2
+#define BLOCK_SIZE 32
 
 // Forward declaration of the matrix multiplication kernel
 __global__ void MatMulKernel(const Matrix, const Matrix, Matrix);
@@ -263,16 +263,16 @@ int main(int argc, char const *argv[])
             if (param < 0)
                 param = fabsf(param);
             /*--TEST--*/
-            float test = 5.0 - 6.0;
-            cout << "absolute value of -1 is " << fabsf(test) << endl;
+            //float test = 5.0 - 6.0;
+            //cout << "absolute value of -1 is " << fabsf(test) << endl;
 
-            cout << "param is " << param << endl;
+            //cout << "param is " << param << endl;
 
             square = pow(param, 2);
-            cout << "square is " << square << endl;
+            //cout << "square is " << square << endl;
 
             sum += square;
-            cout << "sum is " << sum << endl;
+            //cout << "sum is " << sum << endl;
         }
     }
     cout << fixed << sum << endl;
