@@ -260,8 +260,12 @@ int main(int argc, char const *argv[])
 
     for (i = 0; i < C.height; ++i) {
         for (j = 0; j < C.width; ++j) {
-            param = C.elements[i * C.width + j] - D.elements[i * D.width + j];
+            param = C.elements[i * C.width + j] - D.elements[i * D.width + j];            
+            if (param < 0)
+                param = fabsf(param);
+
             cout << "param is " << param << endl;
+
             sum += sqrt(param);
             cout << "sum is " << sum << endl;
         }
