@@ -262,6 +262,9 @@ int main(int argc, char const *argv[])
             param = C.elements[i * C.width + j] - D.elements[i * D.width + j];            
             if (param < 0)
                 param = fabsf(param);
+            /*--TEST--*/
+            float test = 5.0 - 6.0;
+            cout << "absolute value of -1 is " << fabsf(test) << endl;
 
             cout << "param is " << param << endl;
 
