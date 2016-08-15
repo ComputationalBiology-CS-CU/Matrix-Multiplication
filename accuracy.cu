@@ -266,7 +266,7 @@ int main(int argc, char const *argv[])
 
             cout << "param is " << param << endl;
 
-            sum += sqrt(param);
+            sum += pow(param, 2);
             cout << "sum is " << sum << endl;
         }
     }
