@@ -256,7 +256,7 @@ int main(int argc, char const *argv[])
     MatMul(A, B, D);
 
     // Compare matrices C and D -- they should be almost identical
-    cout << "Accuracy is:" << endl;
+    cout << "Accuracy is: ";
 
     for (i = 0; i < C.height; ++i) {
         for (j = 0; j < C.width; ++j) {
@@ -264,10 +264,10 @@ int main(int argc, char const *argv[])
             if (param < 0)
                 param = fabsf(param);
 
-            cout << "param is " << param << endl;
+            //cout << "param is " << param << endl;
 
             sum += pow(param, 2);
-            cout << "sum is " << sum << endl;
+            //cout << "sum is " << sum << endl;
         }
     }
     cout << fixed << sum << endl;
