@@ -20,7 +20,7 @@ typedef struct {
 } Matrix;
 
 // Thread block size
-#define BLOCK_SIZE 32
+#define BLOCK_SIZE 2
 
 // Forward declaration of the matrix multiplication kernel
 __global__ void MatMulKernel(const Matrix, const Matrix, Matrix);
@@ -256,13 +256,15 @@ int main(int argc, char const *argv[])
     MatMul(A, B, D);
 
     // Compare matrices C and D -- they should be almost identical
-    cout << "Accuracy is ";
+    cout << "Accuracy is:" << endl;
 
     for (i = 0; i < C.height; ++i) {
         for (j = 0; j < C.width; ++j) {
             param = C.elements[i * C.width + j] - D.elements[i * D.width + j];
             sum += sqrt(param);
+            cout << sum << " + ";
         }
+        cout << " =" << endl;
     }
     cout << fixed << sum << endl;
 
