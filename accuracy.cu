@@ -260,19 +260,18 @@ int main(int argc, char const *argv[])
     for (i = 0; i < C.height; ++i) {
         for (j = 0; j < C.width; ++j) {
             param = C.elements[i * C.width + j] - D.elements[i * D.width + j];            
+            
             if (param < 0)
                 param = fabsf(param);
-            /*--TEST--*/
-            //float test = 5.0 - 6.0;
-            //cout << "absolute value of -1 is " << fabsf(test) << endl;
-
-            //cout << "param is " << param << endl;
 
             square = pow(param, 2);
-            //cout << "square is " << square << endl;
-
             sum += square;
-            //cout << "sum is " << sum << endl;
+
+            if (i < 10 && j < 10) {
+                cout << "param is " << param << endl;
+                cout << "square is " << square << endl;
+                cout << "sum is " << sum << endl;
+            }
         }
     }
     cout << fixed << sum << endl;
