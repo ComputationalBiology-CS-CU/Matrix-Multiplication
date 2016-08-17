@@ -19,7 +19,7 @@ typedef struct {
 } Matrix;
 
 // Thread block size
-#define BLOCK_SIZE 10
+#define BLOCK_SIZE 32
 
 // Forward declaration of the matrix multiplication kernel
 __global__ void MatMulKernel(const Matrix, const Matrix, Matrix);
@@ -157,10 +157,12 @@ int main(int argc, char const *argv[])
             square = pow(param, 2);
             sum += square;
             
-            if (param > 0) {
+            int k = 0;
+            if (param > 0 && k < 10) {
                 cout << "param is " << param << "; ";
                 cout << "square is " << square << "; ";
                 cout << "sum is " << sum << endl;
+                ++k;
             }
         }
     }
