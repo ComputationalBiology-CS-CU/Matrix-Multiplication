@@ -168,6 +168,7 @@ int main(int argc, char const *argv[])
     cout << fixed << sum << endl;
 
     // Print matrices A, B, C, and D
+    /*
     for (i = 0; i < min(10, A.height); ++i) {
         for (j = 0; j < min(10, A.width); ++j)
             cout << fixed << A.elements[i * A.width + j] << "\t";
@@ -199,6 +200,7 @@ int main(int argc, char const *argv[])
         cout << endl;
     }
     cout << endl;
+    */
     
     delete[] A.elements;
     delete[] B.elements;
