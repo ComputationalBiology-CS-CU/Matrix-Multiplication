@@ -157,7 +157,7 @@ int main(int argc, char const *argv[])
             square = pow(param, 2);
             sum += square;
             
-            if (i < 3 && j < 3) {
+            if (param > 1) {
                 cout << "param is " << param << "; ";
                 cout << "square is " << square << "; ";
                 cout << "sum is " << sum << endl;
