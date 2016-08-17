@@ -82,7 +82,7 @@ __global__ void MatMulKernel(Matrix A, Matrix B, Matrix C)
     int row = blockIdx.y * blockDim.y + threadIdx.y;
     int col = blockIdx.x * blockDim.x + threadIdx.x;
     for (int e = 0; e < A.width; ++e) {
-        if (row <= A.height && col <= B.width)
+        if (row < A.height - 1 && col < B.width - 1)
             Cvalue += A.elements[row * A.width + e]
                     * B.elements[e * B.width + col];
     }
@@ -151,8 +151,8 @@ int main(int argc, char const *argv[])
         for (j = 0; j < C.width; ++j) {
             param = C.elements[i * C.width + j] - D.elements[i * D.width + j];            
             
-            if (param < 0)
-                param = fabsf(param);
+            //if (param < 0)
+                //param = fabsf(param);
 
             square = pow(param, 2);
             sum += square;
