@@ -7,4 +7,4 @@
 
 
 # the program to run
-./accuracy.o 60 1000000 400
+./accuracy.o 60 10000 400
