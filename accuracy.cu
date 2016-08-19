@@ -83,12 +83,12 @@ __global__ void MatMulKernel(Matrix A, Matrix B, Matrix C)
     int col = blockIdx.x * blockDim.x + threadIdx.x;
     
     // Boundary check
-    if (row > A.height || col > B.width)
-        return;
-
-    for (int e = 0; e < A.width; ++e)
+    if (row < A.height && col < B.width) {
+        for (int e = 0; e < A.width; ++e)
         Cvalue += (A.elements[row * A.width + e]) * 
                 (B.elements[e * B.width + col]);
+    }
+
     C.elements[row * C.width + col] = Cvalue;
 }
 
