@@ -136,7 +136,7 @@ int main(int argc, char const *argv[])
             B.elements[i * B.width + j] = ((float)rand() / (float)RAND_MAX) * 10;
 
     // Print matrix sizes and BLOCK_SIZE
-    cout << "Matrix sizes: " << a1 << "x" << a2 << " * " << b1 << "x" b2 << endl;
+    cout << "Matrix sizes: " << a1 << "x" << a2 << " * " << b1 << "x" << b2 << endl;
     cout << "BLOCK_SIZE: " << BLOCK_SIZE << endl;
 
     // Vanilla C++ matrix multiplication
