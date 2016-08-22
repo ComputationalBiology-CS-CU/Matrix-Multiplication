@@ -165,6 +165,11 @@ int main(int argc, char const *argv[])
                 cout << "Param is " << param << endl;
                 ++p;
             }
+
+            if (sum > 500) {
+                cout << "Sum is greater than 500" << endl;
+                break;
+            }
         }
     }
     cout << "Accuracy is: ";
