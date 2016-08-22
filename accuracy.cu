@@ -82,12 +82,11 @@ __global__ void MatMulKernel(Matrix A, Matrix B, Matrix C)
     int row = blockIdx.y * blockDim.y + threadIdx.y;
     int col = blockIdx.x * blockDim.x + threadIdx.x;
     
-    // Boundary check
-    if (row < A.height && col < B.width) {
+    // Boundary check before multiplication
+    if (row < A.height && col < B.width) 
         for (int e = 0; e < A.width; ++e)
             Cvalue += (A.elements[row * A.width + e]) * 
                     (B.elements[e * B.width + col]);
-    }
 
     C.elements[row * C.width + col] = Cvalue;
 }
@@ -100,6 +99,9 @@ int main(int argc, char const *argv[])
     float sum = 0.0, param = 0.0, square = 0.0;
 
     srand(time(NULL));
+
+    if (argc < 4)
+        cout << "Usage: ./accuracy.o A.height A.width B.width" << endl;
 
     // Get dimensions of A and B
     // Run $ ./matrixMul 1 1000000 400
@@ -127,44 +129,34 @@ int main(int argc, char const *argv[])
     // Fill A and B with random floats
     for (i = 0; i < A.height; ++i) 
         for (j = 0; j < A.width; ++j) 
-            //A.elements[i * A.width + j] = (float)(rand() % 100);
             A.elements[i * A.width + j] = ((float)rand() / (float)RAND_MAX) * 10;
 
     for (i = 0; i < B.height; ++i) 
         for (j = 0; j < B.width; ++j) 
-            //B.elements[i * B.width + j] = (float)(rand() % 100);
             B.elements[i * B.width + j] = ((float)rand() / (float)RAND_MAX) * 10;
-    /*
-    for (i = 0; i < D.height; ++i) 
-        for (j = 0; j < D.width; ++j) 
-            D.elements[i * D.width + j] = ((float)rand() / (float)RAND_MAX) * 100;
-    */
 
     // Vanilla C++ matrix multiplication
-    for (i = 0; i < A.height; ++i) {
-        for (j = 0; j < B.width; ++j) {
-            for (k = 0; k < A.width; ++k) {
+    for (i = 0; i < A.height; ++i)
+        for (j = 0; j < B.width; ++j)
+            for (k = 0; k < A.width; ++k)
                 C.elements[i * C.width + j] += (A.elements[i * A.width + k]) * 
                     (B.elements[k * B.width + j]);
-            }
-        }
-    }
 
     // Call MatMul(), and therefore MatMulKernel()
     MatMul(A, B, D);
 
-    // Compare matrices C and D -- they should be almost identical
+    // Compare matrices C and D -- they should be identical
+    int k = 0;
     for (i = 0; i < C.height; ++i) {
         for (j = 0; j < C.width; ++j) {
             param = C.elements[i * C.width + j] - D.elements[i * D.width + j];            
             
-            //if (param < 0)
-                //param = fabsf(param);
+            if (param < 0)
+                param = fabsf(param);
 
             square = pow(param, 2);
             sum += square;
             
-            int k = 0;
             if (param > 0 && k < 10) {
                 cout << "param is " << param << "; ";
                 cout << "square is " << square << "; ";
@@ -176,31 +168,14 @@ int main(int argc, char const *argv[])
     cout << "Accuracy is: ";
     cout << fixed << sum << endl;
 
-    // Print matrices A, B, C, and D
-    /*
-    for (i = 0; i < min(10, A.height); ++i) {
-        for (j = 0; j < min(10, A.width); ++j)
-            cout << fixed << A.elements[i * A.width + j] << "\t";
-        
-        cout << endl;
-    }
-    cout << endl;
-    
-    for (i = 0; i < min(10, B.height); ++i) {
-        for (j = 0; j < min(10, B.width); ++j)
-            cout << fixed << B.elements[i * B.width + j] << "\t";
-
-        cout << endl;
-    }
-    cout << endl;
-
+    // Print matrices C and D
     for (int i = 0; i < min(10, C.height); ++i) {
         for (int j = 0; j < min(10, C.width); ++j) {
             cout << fixed << C.elements[i * C.width + j] << "\t";
         }
         cout << endl;
     }
-    cout << endl;
+    cout << "\n" << endl;
 
     for (int i = 0; i < min(10, D.height); ++i) {
         for (int j = 0; j < min(10, D.width); ++j) {
@@ -209,7 +184,6 @@ int main(int argc, char const *argv[])
         cout << endl;
     }
     cout << endl;
-    */
     
     delete[] A.elements;
     delete[] B.elements;
