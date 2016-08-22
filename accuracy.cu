@@ -150,7 +150,7 @@ int main(int argc, char const *argv[])
     MatMul(A, B, D);
 
     // Compare matrices C and D -- they should be identical
-    /*
+    // /*
     int p = 0;
     for (i = 0; i < C.height; ++i) {
         for (j = 0; j < C.width; ++j) {
@@ -166,16 +166,11 @@ int main(int argc, char const *argv[])
                 cout << "Param is " << param << endl;
                 ++p;
             }
-
-            if (sum > 500) {
-                cout << "Sum is greater than 500" << endl;
-                break;
-            }
         }
     }
     cout << "Accuracy is: ";
     cout << fixed << sum << "\n" << endl;
-    */
+    // */
 
     // Print matrices C and D
     // /*
