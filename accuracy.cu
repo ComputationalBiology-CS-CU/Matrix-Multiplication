@@ -135,6 +135,10 @@ int main(int argc, char const *argv[])
         for (j = 0; j < B.width; ++j) 
             B.elements[i * B.width + j] = ((float)rand() / (float)RAND_MAX) * 10;
 
+    // Print matrix sizes and BLOCK_SIZE
+    cout << "Matrix sizes: " << a1 << ", " << a2 << ", " << b2 << endl;
+    cout << "BLOCK_SIZE is: " << BLOCK_SIZE << endl;
+
     // Vanilla C++ matrix multiplication
     for (i = 0; i < A.height; ++i)
         for (j = 0; j < B.width; ++j)
@@ -158,9 +162,7 @@ int main(int argc, char const *argv[])
             sum += square;
             
             if (param > 0 && k < 10) {
-                cout << "param is " << param << "; ";
-                cout << "square is " << square << "; ";
-                cout << "sum is " << sum << endl;
+                cout << "Param is " << param << endl;
                 ++k;
             }
         }
