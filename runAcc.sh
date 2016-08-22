@@ -7,4 +7,4 @@
 
 
 # the program to run
-./accuracy.o 60 100000 400
+cuda-memcheck ./accuracy.o 60 100000 400
