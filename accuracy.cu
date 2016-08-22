@@ -137,7 +137,7 @@ int main(int argc, char const *argv[])
 
     // Print matrix sizes and BLOCK_SIZE
     cout << "Matrix sizes: " << a1 << "x" << a2 << " * " << b1 << "x" << b2 << endl;
-    cout << "BLOCK_SIZE: " << BLOCK_SIZE << << "\n" << endl;
+    cout << "BLOCK_SIZE: " << BLOCK_SIZE << "\n" << endl;
 
     // Vanilla C++ matrix multiplication
     for (i = 0; i < A.height; ++i)
