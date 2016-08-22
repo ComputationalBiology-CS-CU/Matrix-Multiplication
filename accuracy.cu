@@ -85,8 +85,8 @@ __global__ void MatMulKernel(Matrix A, Matrix B, Matrix C)
     // Boundary check
     if (row < A.height && col < B.width) {
         for (int e = 0; e < A.width; ++e)
-        Cvalue += (A.elements[row * A.width + e]) * 
-                (B.elements[e * B.width + col]);
+            Cvalue += (A.elements[row * A.width + e]) * 
+                    (B.elements[e * B.width + col]);
     }
 
     C.elements[row * C.width + col] = Cvalue;
@@ -141,12 +141,14 @@ int main(int argc, char const *argv[])
     */
 
     // Vanilla C++ matrix multiplication
-    for (i = 0; i < A.height; ++i)
-        for (j = 0; j < B.width; ++j)
+    for (i = 0; i < A.height; ++i) {
+        for (j = 0; j < B.width; ++j) {
             for (k = 0; k < A.width; ++k) {
-                C.elements[i * C.width + j] += A.elements[i * A.width + k] * 
-                    B.elements[k * B.width + j];
+                C.elements[i * C.width + j] += (A.elements[i * A.width + k]) * 
+                    (B.elements[k * B.width + j]);
             }
+        }
+    }
 
     // Call MatMul(), and therefore MatMulKernel()
     MatMul(A, B, D);
