@@ -136,8 +136,8 @@ int main(int argc, char const *argv[])
             B.elements[i * B.width + j] = ((float)rand() / (float)RAND_MAX) * 10;
 
     // Print matrix sizes and BLOCK_SIZE
-    cout << "Matrix sizes: " << a1 << ", " << a2 << ", " << b2 << endl;
-    cout << "BLOCK_SIZE is: " << BLOCK_SIZE << endl;
+    cout << "Matrix sizes: " << a1 << "x" << a2 << " * " << b1 << "x" b2 << endl;
+    cout << "BLOCK_SIZE: " << BLOCK_SIZE << endl;
 
     // Vanilla C++ matrix multiplication
     for (i = 0; i < A.height; ++i)
@@ -168,9 +168,10 @@ int main(int argc, char const *argv[])
         }
     }
     cout << "Accuracy is: ";
-    cout << fixed << sum << endl;
+    cout << fixed << sum << "/n" << endl;
 
     // Print matrices C and D
+    /*
     for (int i = 0; i < min(10, C.height); ++i) {
         for (int j = 0; j < min(10, C.width); ++j) {
             cout << fixed << C.elements[i * C.width + j] << "\t";
@@ -186,6 +187,7 @@ int main(int argc, char const *argv[])
         cout << endl;
     }
     cout << endl;
+    */
     
     delete[] A.elements;
     delete[] B.elements;

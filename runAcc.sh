@@ -7,4 +7,7 @@
 
 
 # the program to run
-cuda-memcheck ./accuracy.o 20 30 40
+./accuracy.o 500 500 500
+
+# check for memory leaks
+# cuda-memcheck ./accuracy.o 20 30 40
