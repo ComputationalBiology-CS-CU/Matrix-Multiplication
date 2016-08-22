@@ -150,7 +150,7 @@ int main(int argc, char const *argv[])
     MatMul(A, B, D);
 
     // Compare matrices C and D -- they should be identical
-    int k = 0;
+    int p = 0;
     for (i = 0; i < C.height; ++i) {
         for (j = 0; j < C.width; ++j) {
             param = C.elements[i * C.width + j] - D.elements[i * D.width + j];            
@@ -161,9 +161,9 @@ int main(int argc, char const *argv[])
             square = pow(param, 2);
             sum += square;
             
-            if (param > 0 && k < 10) {
+            if (param > 0 && p < 10) {
                 cout << "Param is " << param << endl;
-                ++k;
+                ++p;
             }
         }
     }
