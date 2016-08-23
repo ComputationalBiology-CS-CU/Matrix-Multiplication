@@ -154,7 +154,7 @@ int main(int argc, char const *argv[])
     int p = 0;
     for (i = 0; i < C.height; ++i) {
         for (j = 0; j < C.width; ++j) {
-            param = C.elements[i * C.width + j] - D.elements[i * D.width + j];            
+            param = (C.elements[i * C.width + j]) - (D.elements[i * D.width + j]);            
             
             if (param < 0)
                 param = fabsf(param);
