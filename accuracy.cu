@@ -245,14 +245,6 @@ int main(int argc, char const *argv[])
     cout << "Matrix sizes: " << a1 << "x" << a2 << " * " << b1 << "x" << b2 << endl;
     cout << "BLOCK_SIZE: " << BLOCK_SIZE << "\n" << endl;
 
-    // Call MatMul(), and therefore MatMulKernel()
-    /*
-    for (i = 0; i < C.height; ++i)
-        for (j = 0; j < C.width; ++j)
-            D.elements[i * D.width + j] = C.elements[i * C.width + j];
-    */
-    MatMul(A, B, D);
-
     // Vanilla C++ matrix multiplication
     for (i = 0; i < A.height; ++i)
         for (j = 0; j < B.width; ++j)
@@ -261,6 +253,16 @@ int main(int argc, char const *argv[])
                     (B.elements[k * B.width + j]);
 
     cout << "Finished Vanilla C++ multiplication" << endl;
+
+    // Call MatMul(), and therefore MatMulKernel()
+    /*
+    for (i = 0; i < C.height; ++i)
+        for (j = 0; j < C.width; ++j)
+            D.elements[i * D.width + j] = C.elements[i * C.width + j];
+    */
+    MatMul(A, B, D);
+
+    cout << "Finished CUDA C++ multiplication" << endl;
 
     // Compare matrices C and D -- they should be identical
     // /*
