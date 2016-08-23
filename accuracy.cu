@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <iostream>
 #include <cmath>
+#include <cublas_v2.h>
 using namespace std;
 
 // Matrices are stored in row-major order:
