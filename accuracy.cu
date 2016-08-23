@@ -255,11 +255,11 @@ int main(int argc, char const *argv[])
                 C.elements[i * C.width + j] += (A.elements[i * A.width + k]) * 
                     (B.elements[k * B.width + j]);
 
-    // /*
+    /*
     for (i = 0; i < C.height; ++i)
         for (j = 0; j < C.width; ++j)
             D.elements[i * D.width + j] = C.elements[i * C.width + j];
-    // */
+    */
 
     // Compare matrices C and D -- they should be identical
     // /*
