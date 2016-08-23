@@ -246,6 +246,11 @@ int main(int argc, char const *argv[])
     cout << "BLOCK_SIZE: " << BLOCK_SIZE << "\n" << endl;
 
     // Call MatMul(), and therefore MatMulKernel()
+    /*
+    for (i = 0; i < C.height; ++i)
+        for (j = 0; j < C.width; ++j)
+            D.elements[i * D.width + j] = C.elements[i * C.width + j];
+    */
     MatMul(A, B, D);
 
     // Vanilla C++ matrix multiplication
@@ -255,11 +260,7 @@ int main(int argc, char const *argv[])
                 C.elements[i * C.width + j] += (A.elements[i * A.width + k]) * 
                     (B.elements[k * B.width + j]);
 
-    /*
-    for (i = 0; i < C.height; ++i)
-        for (j = 0; j < C.width; ++j)
-            D.elements[i * D.width + j] = C.elements[i * C.width + j];
-    */
+    cout << "Finished Vanilla C++ multiplication" << endl;
 
     // Compare matrices C and D -- they should be identical
     // /*
