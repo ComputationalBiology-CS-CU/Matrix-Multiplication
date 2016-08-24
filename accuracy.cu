@@ -198,7 +198,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     */
 }
 
-int main(int argc, char const *argv[])
+int main(int argc, char* argv[])
 {
     Matrix A, B, C, D;
     int a1, a2, b1, b2;
