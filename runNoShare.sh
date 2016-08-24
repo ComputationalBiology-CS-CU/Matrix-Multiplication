@@ -7,4 +7,4 @@
 
 
 # the program to run
-./noShare.o 1600 1000000 400
+./noShare.o 32 1000000 400
