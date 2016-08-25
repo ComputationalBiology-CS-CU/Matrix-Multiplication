@@ -23,9 +23,10 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
 
 	// Create cuBLAS handle
 	stat = cublasCreate(&handle);
-	cout << "Create cuBLAS handle: " << cudaGetErrorString(err) << endl;
-	
-    // Load A and B to device memory
+	if (stat != CUBLAS_STATUS_SUCCESS)
+		cout << "CUBLAS initialization failed\n" << endl;
+
+	// Load A and B to device memory
     Matrix d_A;
     d_A.width = A.width; 
     d_A.height = A.height;
@@ -58,8 +59,7 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     	A and B don't need to be transposed, flipping their order is sufficient
     	ex) B * A rather than A * B
     */
-    float apha = 1.0f;
-    float beta = 0.0f;
+    float alpha = 1.0f, beta = 0.0f;
     cublasSgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N,
              B.width, A.height, A.width, &alpha,
              B.elements, B.width, A.elements, A.width,
