@@ -58,7 +58,8 @@ void MatMul(const Matrix A, const Matrix B, Matrix C)
     	A and B don't need to be transposed, flipping their order is sufficient
     	ex) B * A rather than A * B
     */
-    float apha = 1.0f, beta = 0.0f;
+    float apha = 1.0f;
+    float beta = 0.0f;
     cublasSgemm(handle, CUBLAS_OP_N, CUBLAS_OP_N,
              B.width, A.height, A.width, &alpha,
              B.elements, B.width, A.elements, A.width,
