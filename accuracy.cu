@@ -11,6 +11,9 @@
 #include <cublas_v2.h>
 using namespace std;
 
+// Generate random floats between 0 and UP_BOUND
+#define UP_BOUND 100;
+
 // Matrices are stored in row-major order:
 // M(row, col) = *(M.elements + row * M.stride + col)
 typedef struct {
@@ -236,11 +239,11 @@ int main(int argc, char* argv[])
     // Fill A and B with random floats
     for (i = 0; i < A.height; ++i) 
         for (j = 0; j < A.width; ++j) 
-            A.elements[i * A.width + j] = ((float)rand() / (float)RAND_MAX) * 10.0;
+            A.elements[i * A.width + j] = ((float)rand() / (float)RAND_MAX) * UP_BOUND;
 
     for (i = 0; i < B.height; ++i) 
         for (j = 0; j < B.width; ++j) 
-            B.elements[i * B.width + j] = ((float)rand() / (float)RAND_MAX) * 10.0;
+            B.elements[i * B.width + j] = ((float)rand() / (float)RAND_MAX) * UP_BOUND;
 
     // Print matrix sizes and BLOCK_SIZE
     cout << "Matrix sizes: " << a1 << "x" << a2 << " * " << b1 << "x" << b2 << endl;

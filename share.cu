@@ -9,6 +9,9 @@
 #include <iostream>
 using namespace std;
 
+// Generate random floats between 0 and UP_BOUND
+#define UP_BOUND 100;
+
 // Matrices are stored in row-major order:
 // M(row, col) = *(M.elements + row * M.stride + col)
 typedef struct {
@@ -205,6 +208,9 @@ int main(int argc, char const *argv[])
 
     srand(time(NULL));
 
+    if (argc < 4)
+        cout << "Usage: ./accuracy.o A.height A.width B.width" << endl;
+
     // Get dimensions of A and B
     // Run $ ./matrixMul 1 1000000 400
     a1 = atoi(argv[1]); // A's height
@@ -227,11 +233,11 @@ int main(int argc, char const *argv[])
     // Fill A and B with random floats
     for (i = 0; i < A.height; ++i) 
         for (j = 0; j < A.width; ++j) 
-            A.elements[i * A.width + j] = ((float)rand() / (float)RAND_MAX) * 100;
+            A.elements[i * A.width + j] = ((float)rand() / (float)RAND_MAX) * UP_BOUND;
 
     for (i = 0; i < B.height; ++i) 
         for (j = 0; j < B.width; ++j) 
-            B.elements[i * B.width + j] = ((float)rand() / (float)RAND_MAX) * 100;
+            B.elements[i * B.width + j] = ((float)rand() / (float)RAND_MAX) * UP_BOUND;
 
     // Call MatMul(), and therefore MatMulKernel()
     t = clock();

@@ -7,7 +7,4 @@
 
 
 # the program to run
-# ./mult.o 50 1000000 400
-
-# check for memory leaks
-cuda-memcheck ./mult.o 2 4 3
+./mult.o 1 1000000 400

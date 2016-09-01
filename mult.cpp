@@ -4,10 +4,12 @@
 #include <ctime>
 using namespace std;
 
+// Generate random floats between 0 and UP_BOUND
+#define UP_BOUND 100;
+
 typedef struct {
     int width;
     int height;
-    int stride; 
     float* elements;
 } Matrix;
 
@@ -19,6 +21,9 @@ int main(int argc, char const *argv[])
     int i, j, k;
 
     srand(time(NULL));
+
+    if (argc < 4)
+        cout << "Usage: ./accuracy.o A.height A.width B.width" << endl;
 
     // Get dimensions of A and B
     // Run $ ./matrixMul 1 1000000 400
@@ -42,22 +47,21 @@ int main(int argc, char const *argv[])
     // Fill A and B with random floats
     for (i = 0; i < A.height; ++i)
         for (j = 0; j < A.width; ++j)
-            A.elements[i * A.width + j] = float(rand() % 100);
+            A.elements[i * A.width + j] = ((float)rand() / (float)RAND_MAX) * UP_BOUND;
 
 
     for (i = 0; i < B.height; ++i) 
         for (j = 0; j < B.width; ++j) 
-            B.elements[i * B.width + j] = float(rand() % 100);
+            B.elements[i * B.width + j] = ((float)rand() / (float)RAND_MAX) * UP_BOUND;
     
     // Matrix multiplication
     t = clock();
 
     for (i = 0; i < A.height; ++i)
     	for (j = 0; j < B.width; ++j)
-    		for (k = 0; k < A.width; ++k) {
+    		for (k = 0; k < A.width; ++k) 
     			C.elements[i * C.width + j] += A.elements[i * A.width + k] * 
                     B.elements[k * B.width + j];
-    		}
 
     // Print time multiplication took
     t = clock() - t;
